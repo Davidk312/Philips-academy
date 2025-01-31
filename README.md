@@ -1,82 +1,90 @@
 # Philips-academy
 
-## Setup Instructions
+This project uses a development container running in Ubuntu WSL2 on Windows, providing a consistent development environment for all developers. It includes automatic OpenOCD setup for debugging, where the GDB server runs on Windows while debugging occurs within the container.
 
-### Prerequisites
+## Prerequisites
 
-1. **Install Visual Studio Code**: Download and install [Visual Studio Code](https://code.visualstudio.com/).
-2. **Install WSL and Ubuntu**:
-    - Install Ubuntu from the Microsoft Store.
-    - Open a terminal and run the following commands to enable WSL and Virtual Machine Platform:
-      ```sh
-      dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
-      dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
-      ```
-    - Install WSL and Ubuntu:
-      ```sh
-      wsl --install
-      ```
-    - Open the Ubuntu WSL terminal and set it up.
+1. **Windows with WSL2 and Ubuntu**: Ensure you have Windows with WSL2 and Ubuntu installed
+2. **Visual Studio Code**: Install [Visual Studio Code](https://code.visualstudio.com/) with the "Dev Containers" extension
+3. **ST-Link**: Have an ST-Link debugger connected to your system
 
-### Clone the Project
+## Project Setup
 
-1. **Fork the Project**: Fork the project repository to your own GitHub account.
-2. **Clone the Forked Project**: Open the Ubuntu WSL terminal and clone your forked project:
-    ```sh
-    git clone <your-forked-repo-url>
-    cd <your-forked-repo-directory>
-    ```
+1. **Initialize Submodules**:
+```bash
+git submodule update --init --recursive
+```
 
-3. **Initialize Submodules**: Run the following command to initialize and update submodules:
-    ```sh
-    git submodule update --init --recursive
-    ```
+2. **Open in VS Code**:
+```bash
+code .
+```
 
-### Setup Dev Container
+3. When prompted, click "Reopen in Container" to start the development container
 
-1. **Install Dev Container Extension**: Open Visual Studio Code and install the "Remote - Containers" extension.
-2. **Reload Visual Studio Code**: Use the command palette (`Ctrl+Shift+P`) and select `Developer: Reload Window`.
-3. **Reopen in Container**: A popup should appear asking if you want to reopen the project in a container. Select "Reopen in Container".
+## Development Environment
 
-### Build the Project
+The project uses a development container that provides:
+- All necessary build tools and dependencies
+- Automatic OpenOCD installation and configuration
+- Integrated debugging support
 
-1. **Select Target**: After the dev container is set up, select the target `stm32f429zi` (or another microcontroller) for building the project for the microcontroller.
-2. **Build the Project**: Use the build command in Visual Studio Code to build the project.
+### Automatic OpenOCD Setup
 
-### Run Tests
+The container automatically:
+1. Installs OpenOCD on your Windows system if not present
+2. Sets up monitoring services for debugging communication
+3. Manages the connection between the container and Windows-based GDB server
 
-1. **Select Configuration for Host Tooling and Tests**: Select the configuration for host tooling and tests to build and run tests on your local PC.
-2. **Build the Tests**: Use the build command in Visual Studio Code to build the tests.
-3. **Run the Tests**: Use the command palette (`Ctrl+Shift+P`) and select `CMake: Run CTest` to run the tests.
+## Building and Debugging
 
-### Test Directory
+### Building the Project
 
-The [tests](http://_vscodecontentref_/1) directory contains subdirectories for each project under [src](http://_vscodecontentref_/2). Each subdirectory includes test files and a [CMakeLists.txt](http://_vscodecontentref_/3) file to define the test build configuration. For example, the `tests/move_finger` directory contains tests for the `move_finger` project under [src](http://_vscodecontentref_/4).
+1. Select the `stm32f429zi` configuration in VS Code
+2. Build using either:
+   - VS Code's build command (Ctrl+Shift+B)
+   - CMake commands in the terminal
 
-To add a new test:
+### Debugging
 
-1. **Create a New Directory**: Create a new directory under [tests](http://_vscodecontentref_/5) for your project.
-    ```sh
-    mkdir tests/<new_project>
-    ```
+1. Connect your ST-Link debugger
+2. Press F5 to start debugging
+   - The system will automatically:
+     - Update the WSL IP address
+     - Start OpenOCD if not running
+     - Connect the debugger
 
-2. **Add Test Files**: Add your test files (`.cpp`) to the new directory.
+## Testing
 
-3. **Create CMakeLists.txt**: Create a [CMakeLists.txt](http://_vscodecontentref_/6) file in the new directory with the following content:
-    ```cmake
-    # filepath: /workspaces/Philips-academy/tests/<new_project>/CMakeLists.txt
+1. Select "Configuration for Host Tooling and Tests" in VS Code
+2. Run tests using the "CMake: Run CTest" command
 
-    # Get all test files
-    file(GLOB TEST_SOURCES "*.cpp")
+## Project Structure
 
-    # Add executable for tests
-    add_executable(run<NewProject>Tests ${TEST_SOURCES})
+```
+.
+├── .devcontainer/        # Development container configuration
+├── src/                  # Source code
+├── tests/               # Test files
+├── libs/                # External libraries and dependencies
+└── scripts/            # Utility scripts for development
+```
 
-    # Link Google Test libraries and the necessary project libraries
-    target_link_libraries(run<NewProject>Tests gtest gtest_main services.util hal_st.instantiations)
+## Technical Details
 
-    # Add test target
-    gtest_discover_tests(run<NewProject>Tests)
-    ```
+- **Development Container**: Runs Ubuntu in WSL2
+- **Debug Setup**: 
+  - GDB Server: Runs on Windows via OpenOCD
+  - Debug Client: Runs in container
+  - Communication: Automated via monitoring services
+- **Build System**: CMake with presets for different targets
+- **Testing Framework**: Google Test
 
-By following these steps, you can build your main project for the STM32F429ZI microcontroller and run your tests on your local PC. The [CMakePresets.json](http://_vscodecontentref_/7) helps manage different build configurations, making it easy to switch between building for the microcontroller and running tests locally.
+## Troubleshooting
+
+If debugging doesn't start:
+1. Check if OpenOCD is running (will be started automatically if needed)
+2. Verify ST-Link connection
+3. Ensure the WSL IP address is correctly updated
+
+For other issues, check the VS Code output and debug console for detailed information.
