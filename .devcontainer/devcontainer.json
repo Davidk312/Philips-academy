@@ -20,10 +20,11 @@
       "settings": {
         "C_Cpp.intelliSenseEngine": "default",
         "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
-        "cortex-debug.gdbPath": "/usr/bin/gdb-multiarch"
+        "cortex-debug.gdbPath": "/usr/bin/gdb-multiarch",
+        "task.allowAutomaticTasks": "on"
       }
     }
   },
-  "updateContentCommand": "apt-get update && apt-get install -y iproute2 jq curl wget",
+  "updateContentCommand": "apt-get update && apt-get install -y iproute2 jq curl wget netcat-openbsd",
   "postCreateCommand": "chmod +x scripts/*.sh && ./scripts/get-wsl-ip.sh && ./scripts/check-openocd.sh"
 }
