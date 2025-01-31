@@ -6,7 +6,7 @@
       "type": "cortex-debug",
       "request": "launch",
       "servertype": "external",
-      "gdbTarget": "172.19.96.1:3333",
+      "gdbTarget": "${input:wslIp}:3333",
       "executable": "${workspaceFolder}/build/stm32f429zi/src/robot_hand/robot_hand.elf",
       "device": "STM32F429ZI",
       "svdFile": "${workspaceFolder}/STM32F429.svd",
@@ -17,6 +17,16 @@
         "monitor reset init"
       ],
       "breakpointType": "software"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "wslIp",
+      "type": "command",
+      "command": "extension.commandvariable.file.content",
+      "args": {
+        "fileName": "${workspaceFolder}/.vscode/wsl-ip"
+      }
     }
   ]
 }
