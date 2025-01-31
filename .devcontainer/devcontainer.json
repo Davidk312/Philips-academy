@@ -22,5 +22,5 @@
     }
   },
   "updateContentCommand": "apt-get update && apt-get install -y iproute2",
-  "postCreateCommand": "mkdir -p .vscode && chmod +x scripts/get-wsl-ip.sh && ./scripts/get-wsl-ip.sh > .vscode/wsl-ip"
+  "postCreateCommand": "chmod +x scripts/get-wsl-ip.sh"
 }

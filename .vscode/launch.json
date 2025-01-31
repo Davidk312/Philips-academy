@@ -6,6 +6,7 @@
       "type": "cortex-debug",
       "request": "launch",
       "servertype": "external",
+      "preLaunchTask": "Update WSL IP",
       "gdbTarget": "${input:wslIp}:3333",
       "executable": "${workspaceFolder}/build/stm32f429zi/src/robot_hand/robot_hand.elf",
       "device": "STM32F429ZI",

@@ -9,6 +9,12 @@
                 "kind": "build",
                 "isDefault": true
             }
+        },
+        {
+            "label": "Update WSL IP",
+            "type": "shell",
+            "command": "./scripts/get-wsl-ip.sh",
+            "problemMatcher": []
         }
     ]
 }
