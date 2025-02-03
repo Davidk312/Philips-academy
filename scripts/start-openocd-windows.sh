@@ -177,7 +177,7 @@ echo "5. Type yes/y/ja/j to continue, or no/n/nee to cancel"
 echo "================================================================"
 
 # Read user input with timeout
-read -t 30 -p "Have you completed these steps? (yes/y/ja/j) " response
+read -t 300 -p "Have you completed these steps? (yes/y/ja/j) " response
 response_lower="${response,,}"  # Convert to lowercase
 if [[ ! "$response_lower" =~ ^(yes|y|ja|j)$ ]]; then
     if [[ "$response_lower" =~ ^(no|n|nee)$ ]]; then
